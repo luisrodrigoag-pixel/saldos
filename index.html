@@ -2,23 +2,33 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Saldos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Control de cuentas</title>
+<meta name="description" content="Saldos por cuenta y barrido diario.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Archivo:wght@400;500;600;700&display=swap">
 <style>
   :root{
     --tinta:#1F2A37; --papel:#F7F6F3; --ficha:#FFFFFF; --acero:#8A94A6;
     --champan:#B08D4F; --linea:#E3E1DC; --tenue:#6B7280;
     --ok:#2F6B4F; --baja:#9A3412; --alerta:#9A5B14; --alerta-fondo:#FBEFDD;
+    --verde-wa:#1F8A52;
     color-scheme:light;
   }
   @media (prefers-color-scheme:dark){
-    :root{
+    :root:not([data-theme="light"]){
       --tinta:#E8E6E1; --papel:#141A21; --ficha:#1C242D; --acero:#7D879A;
       --champan:#D4B174; --linea:#2B343F; --tenue:#99A1AE;
       --ok:#8FD0AC; --baja:#F08A6A; --alerta:#E2B176; --alerta-fondo:#332613;
+      --verde-wa:#6CC39A;
       color-scheme:dark;
     }
+  }
+  :root[data-theme="dark"]{
+    --tinta:#E8E6E1; --papel:#141A21; --ficha:#1C242D; --acero:#7D879A;
+    --champan:#D4B174; --linea:#2B343F; --tenue:#99A1AE;
+    --ok:#8FD0AC; --baja:#F08A6A; --alerta:#E2B176; --alerta-fondo:#332613;
+    --verde-wa:#6CC39A;
+    color-scheme:dark;
   }
   *{box-sizing:border-box}
   body{
@@ -27,68 +37,137 @@
     padding:0 max(16px,env(safe-area-inset-left,0px)) 44px max(16px,env(safe-area-inset-right,0px));
   }
   .hoja{max-width:900px;margin:0 auto}
-  header.cab{padding:26px 0 12px}
+  header.cab{padding:26px 0 10px}
   .rotulo{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--champan);font-weight:600;margin:0 0 6px}
   h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(27px,5vw,38px);
      line-height:1.05;margin:0 0 6px;letter-spacing:-.01em}
   .sub{color:var(--tenue);font-size:13.5px;margin:0}
+
+  .pestanas{position:sticky;top:0;z-index:5;background:var(--papel);padding:10px 0;
+            border-bottom:1px solid var(--linea);display:flex;gap:7px;flex-wrap:wrap}
+  .pestanas button{font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+                   border:1px solid var(--linea);background:var(--ficha);color:var(--tenue);
+                   border-radius:999px;padding:8px 15px}
+  .pestanas button:hover{border-color:var(--acero);color:var(--tinta)}
+  .pestanas button[aria-selected="true"]{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+
   .total{background:var(--ficha);border:1px solid var(--linea);border-left:3px solid var(--champan);
-         border-radius:10px;padding:15px 16px;margin:18px 0 22px}
+         border-radius:10px;padding:15px 16px;margin:18px 0 14px}
   .total .et{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acero);font-weight:600}
   .total .cifra{font-family:"Fraunces",Georgia,serif;font-size:clamp(26px,6vw,34px);font-weight:600;
                 font-variant-numeric:tabular-nums;margin-top:2px}
   .total .pie{font-size:12.5px;color:var(--tenue);margin-top:4px}
-  .barra{position:sticky;top:0;z-index:5;background:var(--papel);padding:10px 0;
-         border-bottom:1px solid var(--linea);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .barra input{font:inherit;flex:1;min-width:180px;padding:9px 12px;border-radius:8px;
-               border:1px solid var(--linea);background:var(--ficha);color:var(--tinta)}
-  .barra input:focus{outline:2px solid var(--champan);outline-offset:1px}
-  .barra a{font:inherit;font-size:12.5px;font-weight:600;text-decoration:none;white-space:nowrap;
-           border:1px solid var(--linea);background:var(--ficha);color:var(--tenue);
-           border-radius:999px;padding:8px 14px}
-  .barra a:hover{border-color:var(--acero);color:var(--tinta)}
+  .buscar{width:100%;font:inherit;padding:9px 12px;border-radius:8px;margin-bottom:12px;
+          border:1px solid var(--linea);background:var(--ficha);color:var(--tinta)}
+  .buscar:focus{outline:2px solid var(--champan);outline-offset:1px}
+
   .emp{background:var(--ficha);border:1px solid var(--linea);border-radius:10px;padding:13px 14px;
        margin-bottom:10px}
   .fila{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
   .emp h3{font-size:15px;font-weight:700;margin:0;flex:1;min-width:140px}
   .cifra{font-family:"Fraunces",Georgia,serif;font-size:20px;font-weight:600;
          font-variant-numeric:tabular-nums;white-space:nowrap}
-  .meta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--acero);font-weight:600}
   .det{font-size:12.5px;color:var(--tenue);margin-top:7px;padding-top:7px;border-top:1px dashed var(--linea)}
   .sube{color:var(--ok);font-weight:600}
   .baja{color:var(--baja);font-weight:600}
   .hist{margin-top:6px;font-size:12.5px;color:var(--tenue);font-variant-numeric:tabular-nums}
   .hist span{display:inline-block;margin-right:14px}
+
+  .rejilla{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+  .tarjeta{background:var(--ficha);border:1px solid var(--linea);border-radius:10px;padding:12px 13px}
+  .tarjeta.ok{border-color:var(--ok)}
+  .tarjeta.pend{border-color:var(--alerta);background:var(--alerta-fondo)}
+  .tarjeta h3{font-size:14.5px;font-weight:700;margin:0 0 2px}
+  .tarjeta .banco{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--acero);font-weight:600}
+  .opciones{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+  .opciones button{font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;
+                   border:1px solid var(--linea);background:transparent;color:var(--tenue);
+                   border-radius:999px;padding:4px 11px}
+  .opciones button[aria-pressed="true"]{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+  .tarjeta textarea{width:100%;margin-top:8px;font:inherit;font-size:13px;resize:vertical;min-height:38px;
+                    border:1px solid var(--linea);border-radius:7px;padding:6px 8px;
+                    background:var(--papel);color:var(--tinta)}
+  .tarjeta textarea:focus{outline:2px solid var(--champan);outline-offset:1px}
+
+  .wa{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+      font:inherit;font-size:16px;font-weight:700;text-decoration:none;cursor:pointer;
+      background:var(--verde-wa);color:#fff;border:0;border-radius:12px;padding:16px 18px;margin:4px 0 14px}
+  .wa:hover{filter:brightness(1.07)}
+  .pasos{background:var(--ficha);border:1px solid var(--linea);border-radius:10px;padding:14px 16px}
+  .pasos ol{margin:0;padding-left:20px}
+  .pasos li{margin:5px 0}
+  .pasos p{margin:10px 0 0;font-size:12.5px;color:var(--tenue)}
   .vacio{color:var(--tenue);font-size:14px;padding:22px 0}
   footer{margin-top:32px;border-top:1px solid var(--linea);padding-top:16px;color:var(--acero);
          font-size:12.5px;line-height:1.6}
+  @media (max-width:430px){ .rejilla{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
 <div class="hoja">
   <header class="cab">
-    <p class="rotulo">Uso personal &middot; Luis Ro</p>
-    <h1>Saldos</h1>
-    <p class="sub">Lo que hay en cada cuenta, de las capturas que mandas por WhatsApp.</p>
+    <p class="rotulo">Uso interno</p>
+    <h1>Control de cuentas</h1>
+    <p class="sub">Saldos al corte, barrido del día y el envío de capturas.</p>
   </header>
 
-  <div class="total">
-    <div class="et">Suma en pesos &middot; 4 cuentas</div>
-    <div class="cifra">$210,948.99</div>
-    <div class="pie">Al corte del 17 de noviembre de 2026. Cada cuenta con su propia fecha de captura.</div>
+  <div class="pestanas" role="tablist">
+    <button type="button" role="tab" data-ver="g-select" aria-selected="true">Select</button>
+    <button type="button" role="tab" data-ver="g-solestra" aria-selected="false">Grupo Solestra</button>
+    <button type="button" role="tab" data-ver="barrido" aria-selected="false">Barrido diario</button>
+    <button type="button" role="tab" data-ver="captura" aria-selected="false">Mandar captura</button>
   </div>
 
-  <div class="barra">
-    <input id="q" type="search" placeholder="Buscar empresa o banco&hellip;" aria-label="Buscar empresa o banco">
-    
-  </div>
+  <section id="g-select" data-grupo="Select">
+    <div class="total">
+      <div class="et"><span class="et-n"></span></div>
+      <div class="cifra"></div>
+      <div class="pie"></div>
+    </div>
+    <input class="buscar" type="search" placeholder="Buscar empresa o banco&hellip;" aria-label="Buscar empresa o banco">
+    <div class="lista"></div>
+  </section>
 
-  <div id="lista"></div>
+  <section id="g-solestra" data-grupo="Grupo Solestra" hidden>
+    <div class="total">
+      <div class="et"><span class="et-n"></span></div>
+      <div class="cifra"></div>
+      <div class="pie"></div>
+    </div>
+    <input class="buscar" type="search" placeholder="Buscar empresa o banco&hellip;" aria-label="Buscar empresa o banco">
+    <div class="lista"></div>
+  </section>
+
+  <section id="barrido" hidden>
+    <p class="sub" id="fecha-barrido" style="margin:18px 0 12px"></p>
+    <div class="rejilla" id="rejilla"></div>
+    <p class="sub" style="margin-top:14px">Lo que marques se guarda en este navegador y se
+    reinicia cada día.</p>
+  </section>
+
+  <section id="captura" hidden>
+    <div class="total" style="border-left-color:var(--verde-wa)">
+      <div class="et">La vía corta</div>
+      <div class="cifra" style="font-size:19px">Mándala por WhatsApp</div>
+      <div class="pie">Esta página no recibe archivos: es un sitio sin servidor. El botón
+      abre el chat y de ahí se lee el saldo y se registra.</div>
+    </div>
+    <a class="wa" href="https://wa.me/5215591851361" target="_blank" rel="noopener">Abrir WhatsApp y mandar la captura</a>
+    <div class="pasos">
+      <ol>
+        <li>Entra a la banca y deja a la vista el saldo.</li>
+        <li>Toma la captura de pantalla.</li>
+        <li>Mándala por el chat y escribe de qu&eacute; cuenta es.</li>
+      </ol>
+      <p>Si la captura no dice la cuenta, se pregunta antes de registrarla: Inbursa tiene
+      Gaen OP y Gaen ADM con el mismo contrato, y Banorte tiene Selga y Selga A.</p>
+    </div>
+  </section>
 
   <footer>
     Los saldos se leen de las capturas y se registran uno por uno; no se calcula ni se
-    estima ninguno. Si una captura no dice de qu&eacute; cuenta es, no se registra hasta
-    confirmarlo.
+    estima ninguno. Los n&uacute;meros de cuenta salen a cuatro d&iacute;gitos y los
+    accesos no viven en esta p&aacute;gina.
   </footer>
 </div>
 
@@ -109,7 +188,8 @@
     "fecha": "2026-11-17",
     "saldo": 197806.99
    }
-  ]
+  ],
+  "grupo": "Select"
  },
  {
   "empresa": "Altix",
@@ -126,7 +206,8 @@
     "fecha": "2026-11-17",
     "saldo": 9913.24
    }
-  ]
+  ],
+  "grupo": "Select"
  },
  {
   "empresa": "Mac Computer",
@@ -143,7 +224,8 @@
     "fecha": "2026-11-17",
     "saldo": 1805.12
    }
-  ]
+  ],
+  "grupo": "Select"
  },
  {
   "empresa": "Salud",
@@ -160,25 +242,114 @@
     "fecha": "2026-11-17",
     "saldo": 1423.64
    }
-  ]
+  ],
+  "grupo": "Select"
  }
 ]
 </script>
 
 <script>
 const CUENTAS = JSON.parse(document.getElementById("datos").textContent);
+const EMPRESAS = [
+ {
+  "id": "campta",
+  "nombre": "Campta",
+  "banco": "BBVA Bancomer"
+ },
+ {
+  "id": "salud",
+  "nombre": "Salud",
+  "banco": "BBVA Bancomer"
+ },
+ {
+  "id": "mac",
+  "nombre": "Mac Computer",
+  "banco": "BBVA Bancomer"
+ },
+ {
+  "id": "altix",
+  "nombre": "Altix",
+  "banco": "BBVA Bancomer"
+ },
+ {
+  "id": "clickart",
+  "nombre": "Publicidad Click Art",
+  "banco": "BBVA Bancomer"
+ },
+ {
+  "id": "cofed",
+  "nombre": "Cofed",
+  "banco": "HSBC"
+ },
+ {
+  "id": "solestra",
+  "nombre": "Solestra",
+  "banco": "Bankaool"
+ },
+ {
+  "id": "limmon",
+  "nombre": "Inmobiliaria Limmon Hur",
+  "banco": "Bankaool"
+ },
+ {
+  "id": "securitas",
+  "nombre": "Securitas",
+  "banco": "Santander · Fondeadora"
+ },
+ {
+  "id": "gaen",
+  "nombre": "Gaen",
+  "banco": "Inbursa · OP y ADM"
+ },
+ {
+  "id": "edificare",
+  "nombre": "Edificare",
+  "banco": "Inbursa · OP y ADM"
+ },
+ {
+  "id": "selga",
+  "nombre": "Selga",
+  "banco": "Banorte · Selga y Selga A"
+ }
+];
+
 const pesos = n => n.toLocaleString("es-MX", {minimumFractionDigits:2, maximumFractionDigits:2});
 const fecha = f => { const [a,m,d] = f.split("-"); return d + "/" + m + "/" + a; };
 
-function pinta(filtro){
-  const cont = document.getElementById("lista");
+/* --- Pestañas ---------------------------------------------------------- */
+const tabs = [...document.querySelectorAll('.pestanas button')];
+tabs.forEach(b => b.addEventListener("click", () => {
+  tabs.forEach(o => o.setAttribute("aria-selected", String(o === b)));
+  for (const t of tabs) document.getElementById(t.dataset.ver).hidden = (t !== b);
+}));
+
+/* --- Saldos, una sección por grupo -------------------------------------- */
+function pintaSaldos(seccion, filtro){
+  const grupo = seccion.dataset.grupo;
+  const cont = seccion.querySelector(".lista");
   cont.textContent = "";
   const f = (filtro || "").trim().toLowerCase();
-  const lote = CUENTAS.filter(c => !f ||
+  const delGrupo = CUENTAS.filter(c => c.grupo === grupo);
+  const lote = delGrupo.filter(c => !f ||
     (c.empresa + " " + c.banco + " " + c.cuenta).toLowerCase().includes(f));
+
+  const suma = delGrupo.filter(c => c.moneda === "MXN")
+                       .reduce((t, c) => t + c.saldo, 0);
+  const corte = delGrupo.length
+    ? delGrupo.map(c => c.fecha).sort().slice(-1)[0] : null;
+  seccion.querySelector(".et-n").textContent =
+    "Suma en pesos · " + delGrupo.length +
+    (delGrupo.length === 1 ? " cuenta" : " cuentas");
+  seccion.querySelector(".total .cifra").textContent = "$" + pesos(suma);
+  seccion.querySelector(".total .pie").textContent = corte
+    ? "Al corte del " + fecha(corte) + ". Cada cuenta con su propia fecha de captura."
+    : "Todavía no hay saldos registrados en este grupo.";
+
   if (!lote.length){
     const v = document.createElement("p"); v.className = "vacio";
-    v.textContent = "Nada con ese nombre.";
+    v.textContent = delGrupo.length
+      ? "Nada con ese nombre."
+      : "Aún no se registra ningún saldo de este grupo.";
     cont.append(v); return;
   }
   for (const c of lote){
@@ -191,7 +362,7 @@ function pinta(filtro){
 
     const det = document.createElement("div"); det.className = "det";
     det.textContent = c.banco + " \u00b7 " + c.cuenta + " \u00b7 al " + fecha(c.fecha);
-    if (c.previo !== null){
+    if (c.previo !== null && c.previo !== undefined){
       const dif = c.saldo - c.previo;
       const s = document.createElement("span");
       s.className = dif >= 0 ? "sube" : "baja";
@@ -213,9 +384,73 @@ function pinta(filtro){
     cont.append(art);
   }
 }
+for (const sec of document.querySelectorAll("section[data-grupo]")){
+  sec.querySelector(".buscar").addEventListener("input",
+    e => pintaSaldos(sec, e.target.value));
+  pintaSaldos(sec, "");
+}
 
-document.getElementById("q").addEventListener("input", e => pinta(e.target.value));
-pinta("");
+/* --- Barrido diario ---------------------------------------------------- */
+const ETIQUETAS = {no:"Pendiente", ok:"Revisada", pend:"Con pendiente"};
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto",
+               "septiembre","octubre","noviembre","diciembre"];
+const DIAS = ["domingo","lunes","martes","mi\u00e9rcoles","jueves","viernes","s\u00e1bado"];
+
+function hoyPuebla(){
+  const t = new Date(Date.now() - 6*3600*1000);
+  return t.toISOString().slice(0,10);
+}
+function enLetra(iso){
+  const [a,m,d] = iso.split("-").map(Number);
+  const f = new Date(Date.UTC(a,m-1,d));
+  return DIAS[f.getUTCDay()] + " " + d + " de " + MESES[m-1] + " de " + a;
+}
+const HOY = hoyPuebla();
+const LLAVE = "barrido-" + HOY;
+let estado = {};
+try { const g = localStorage.getItem(LLAVE); if (g) estado = JSON.parse(g); } catch (e) {}
+function guarda(){ try { localStorage.setItem(LLAVE, JSON.stringify(estado)); } catch (e) {} }
+
+document.getElementById("fecha-barrido").textContent = "Barrido del " + enLetra(HOY) + ".";
+
+function pintaBarrido(){
+  const rej = document.getElementById("rejilla");
+  rej.textContent = "";
+  for (const e of EMPRESAS){
+    const r = estado[e.id] || {};
+    const marca = r.marca || "no";
+    const t = document.createElement("article");
+    t.className = "tarjeta" + (marca === "ok" ? " ok" : marca === "pend" ? " pend" : "");
+
+    const h = document.createElement("h3"); h.textContent = e.nombre;
+    const b = document.createElement("div"); b.className = "banco"; b.textContent = e.banco;
+    t.append(h, b);
+
+    const ops = document.createElement("div"); ops.className = "opciones";
+    for (const clave of ["ok","pend","no"]){
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.textContent = ETIQUETAS[clave];
+      btn.setAttribute("aria-pressed", String(marca === clave));
+      btn.addEventListener("click", () => {
+        estado[e.id] = Object.assign({}, estado[e.id], {marca: clave});
+        guarda(); pintaBarrido();
+      });
+      ops.append(btn);
+    }
+    t.append(ops);
+
+    const nota = document.createElement("textarea");
+    nota.placeholder = "Nota";
+    nota.value = r.nota || "";
+    nota.addEventListener("input", () => {
+      estado[e.id] = Object.assign({}, estado[e.id], {nota: nota.value});
+      guarda();
+    });
+    t.append(nota);
+    rej.append(t);
+  }
+}
+pintaBarrido();
 </script>
 </body>
 </html>
