@@ -61,6 +61,17 @@
           border:1px solid var(--linea);background:var(--ficha);color:var(--tinta)}
   .buscar:focus{outline:2px solid var(--champan);outline-offset:1px}
 
+  .cuadro{width:100%;border-collapse:collapse;background:var(--ficha);border:1px solid var(--linea);
+          border-radius:10px;overflow:hidden;margin-bottom:14px;font-size:13.5px}
+  .cuadro th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+             color:var(--acero);font-weight:700;padding:9px 12px;border-bottom:1px solid var(--linea)}
+  .cuadro td{padding:9px 12px;border-bottom:1px solid var(--linea)}
+  .cuadro tr:last-child td{border-bottom:0}
+  .cuadro .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .cuadro .emp-nom{font-weight:600}
+  .cuadro .suma td{font-weight:700;background:rgba(176,141,79,.08)}
+  .cuadro .apagada td{opacity:.6}
+  .cuadro .fecha-vieja{color:var(--alerta);font-weight:600}
   .emp{background:var(--ficha);border:1px solid var(--linea);border-radius:10px;padding:13px 14px;
        margin-bottom:10px}
   .fila{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -135,6 +146,7 @@
       <div class="cifra"></div>
       <div class="pie"></div>
     </div>
+    <table class="cuadro"></table>
     <input class="buscar" type="search" placeholder="Buscar empresa o banco&hellip;" aria-label="Buscar empresa o banco">
     <div class="lista"></div>
   </section>
@@ -145,6 +157,7 @@
       <div class="cifra"></div>
       <div class="pie"></div>
     </div>
+    <table class="cuadro"></table>
     <input class="buscar" type="search" placeholder="Buscar empresa o banco&hellip;" aria-label="Buscar empresa o banco">
     <div class="lista"></div>
   </section>
@@ -640,6 +653,78 @@ tabs.forEach(b => b.addEventListener("click", () => {
   for (const t of tabs) document.getElementById(t.dataset.ver).hidden = (t !== b);
 }));
 
+/* --- El cuadro por empresa ---------------------------------------------- */
+/* Las tarjetas son por CUENTA, y hay empresas con dos (Securitas: Santander y
+   Fondeadora). Este cuadro suma por empresa, que es como se mira el dinero. */
+function pintaCuadro(seccion, cuentas){
+  const tabla = seccion.querySelector(".cuadro");
+  tabla.textContent = "";
+  if (!cuentas.length){ tabla.hidden = true; return; }
+  tabla.hidden = false;
+
+  const porEmpresa = new Map();
+  for (const c of cuentas){
+    if (!porEmpresa.has(c.empresa)) porEmpresa.set(c.empresa, []);
+    porEmpresa.get(c.empresa).push(c);
+  }
+
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  for (const [txt, clase] of [["Empresa",""],["Cuentas","num"],["Saldo","num"],["Última captura","num"]]){
+    const th = document.createElement("th");
+    th.textContent = txt; if (clase) th.className = clase;
+    trh.append(th);
+  }
+  thead.append(trh); tabla.append(thead);
+
+  const tbody = document.createElement("tbody");
+  const filas = [...porEmpresa.entries()].map(([empresa, lote]) => {
+    const con = lote.filter(c => c.saldo !== null);
+    return {
+      empresa,
+      cuentas: lote.length,
+      saldo: con.filter(c => c.moneda === "MXN").reduce((t, c) => t + c.saldo, 0),
+      hay: con.length > 0,
+      fecha: con.length ? con.map(c => c.fecha).sort().slice(-1)[0] : null,
+      leyenda: lote[0].leyenda || null,
+    };
+  }).sort((a, b) => b.saldo - a.saldo || a.empresa.localeCompare(b.empresa));
+
+  let total = 0;
+  for (const f of filas){
+    total += f.saldo;
+    const tr = document.createElement("tr");
+    if (f.leyenda || !f.hay) tr.className = "apagada";
+    const td1 = document.createElement("td"); td1.className = "emp-nom";
+    td1.textContent = f.empresa; tr.append(td1);
+    const td2 = document.createElement("td"); td2.className = "num";
+    td2.textContent = f.cuentas; tr.append(td2);
+    const td3 = document.createElement("td"); td3.className = "num";
+    td3.textContent = f.hay ? "$" + pesos(f.saldo) : "—"; tr.append(td3);
+    const td4 = document.createElement("td"); td4.className = "num";
+    if (f.leyenda){
+      td4.textContent = f.leyenda;
+    } else if (!f.hay){
+      td4.textContent = "sin captura";
+    } else {
+      const n = diasDesde(f.fecha);
+      td4.textContent = n <= 0 ? "hoy" : fecha(f.fecha);
+      if (n > 1) td4.className += " fecha-vieja";
+    }
+    tr.append(td4); tbody.append(tr);
+  }
+
+  const trt = document.createElement("tr"); trt.className = "suma";
+  const t1 = document.createElement("td"); t1.textContent = "Total"; trt.append(t1);
+  const t2 = document.createElement("td"); t2.className = "num";
+  t2.textContent = cuentas.length; trt.append(t2);
+  const t3 = document.createElement("td"); t3.className = "num";
+  t3.textContent = "$" + pesos(total); trt.append(t3);
+  const t4 = document.createElement("td"); trt.append(t4);
+  tbody.append(trt);
+  tabla.append(tbody);
+}
+
 /* --- Saldos, una sección por grupo -------------------------------------- */
 function pintaSaldos(seccion, filtro){
   const grupo = seccion.dataset.grupo;
@@ -669,6 +754,8 @@ function pintaSaldos(seccion, filtro){
       " con saldo de hoy (" + HOY_LETRA + "). Las demás traen el último que se " +
       "capturó y salen marcadas en ámbar.";
   }
+
+  pintaCuadro(seccion, delGrupo);
 
   if (!lote.length){
     const v = document.createElement("p"); v.className = "vacio";
