@@ -72,6 +72,8 @@
   .sello.fresco{color:var(--ok)}
   .sello.viejo{color:var(--alerta)}
   .sello.sindato{color:var(--acero)}
+  .sello.fuera{color:var(--baja);letter-spacing:.1em}
+  .emp.fueradeservicio{opacity:.72}
   .emp.sincaptura{border-style:dashed}
   .cifra.sindato{color:var(--acero)}
   .det{font-size:12.5px;color:var(--tenue);margin-top:7px;padding-top:7px;border-top:1px dashed var(--linea)}
@@ -378,7 +380,8 @@
   "fecha_previo": null,
   "historico": [],
   "grupo": "Por acomodar",
-  "titulo": "Edificare ADM"
+  "titulo": "Edificare ADM",
+  "leyenda": "Fuera de servicio"
  },
  {
   "empresa": "Edificare OP",
@@ -392,7 +395,8 @@
   "fecha_previo": null,
   "historico": [],
   "grupo": "Por acomodar",
-  "titulo": "Edificare OP"
+  "titulo": "Edificare OP",
+  "leyenda": "Fuera de servicio"
  },
  {
   "empresa": "Publicidad Click Art",
@@ -676,7 +680,8 @@ function pintaSaldos(seccion, filtro){
 
   for (const c of lote){
     const art = document.createElement("article");
-    art.className = "emp" + (c.saldo === null ? " sincaptura" : "");
+    art.className = "emp" + (c.saldo === null ? " sincaptura" : "") +
+                    (c.leyenda ? " fueradeservicio" : "");
     const fila = document.createElement("div"); fila.className = "fila";
     const h = document.createElement("h3"); h.textContent = c.titulo || c.empresa;
     const cif = document.createElement("div"); cif.className = "cifra";
@@ -688,7 +693,8 @@ function pintaSaldos(seccion, filtro){
     const cuando = cuandoDice(c);
     const sello = document.createElement("span");
     sello.className = "sello " + cuando.tono;
-    sello.textContent = cuando.texto;
+    sello.textContent = c.leyenda ? c.leyenda : cuando.texto;
+    if (c.leyenda) sello.classList.add("fuera");
     fila.append(h, cif, sello);
     art.append(fila);
 
