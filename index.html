@@ -67,6 +67,13 @@
   .emp h3{font-size:15px;font-weight:700;margin:0;flex:1;min-width:140px}
   .cifra{font-family:"Fraunces",Georgia,serif;font-size:20px;font-weight:600;
          font-variant-numeric:tabular-nums;white-space:nowrap}
+  .sello{flex-basis:100%;font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+         font-weight:700;margin-top:2px}
+  .sello.fresco{color:var(--ok)}
+  .sello.viejo{color:var(--alerta)}
+  .sello.sindato{color:var(--acero)}
+  .emp.sincaptura{border-style:dashed}
+  .cifra.sindato{color:var(--acero)}
   .det{font-size:12.5px;color:var(--tenue);margin-top:7px;padding-top:7px;border-top:1px dashed var(--linea)}
   .sube{color:var(--ok);font-weight:600}
   .baja{color:var(--baja);font-weight:600}
@@ -177,7 +184,7 @@
  {
   "empresa": "Inmobiliaria Limman Hur",
   "banco": "Bankaool",
-  "cuenta": "····0594",
+  "cuenta": "····1297",
   "moneda": "MXN",
   "saldo": 197806.99,
   "fecha": "2026-11-17",
@@ -213,7 +220,7 @@
  {
   "empresa": "Securitas",
   "banco": "Santander",
-  "cuenta": "····9990",
+  "cuenta": "····0087",
   "moneda": "MXN",
   "saldo": 7695.35,
   "fecha": "2026-11-17",
@@ -263,6 +270,149 @@
    }
   ],
   "grupo": "Select"
+ },
+ {
+  "empresa": "Campta",
+  "banco": "BBVA Bancomer",
+  "cuenta": "····3783",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Grupo Solestra"
+ },
+ {
+  "empresa": "Cofed",
+  "banco": "HSBC",
+  "cuenta": "····0918",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Grupo Solestra"
+ },
+ {
+  "empresa": "Edificare ADM",
+  "banco": "Inbursa",
+  "cuenta": "····3977",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Por acomodar"
+ },
+ {
+  "empresa": "Edificare OP",
+  "banco": "Inbursa",
+  "cuenta": "····3977",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Por acomodar"
+ },
+ {
+  "empresa": "Gaen ADM",
+  "banco": "Inbursa",
+  "cuenta": "····7909",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Select"
+ },
+ {
+  "empresa": "Gaen OP",
+  "banco": "Inbursa",
+  "cuenta": "····7909",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Select"
+ },
+ {
+  "empresa": "Publicidad Click Art",
+  "banco": "BBVA Bancomer",
+  "cuenta": "····9190",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Por acomodar"
+ },
+ {
+  "empresa": "Securitas",
+  "banco": "Fondeadora",
+  "cuenta": "····ecom",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Grupo Solestra"
+ },
+ {
+  "empresa": "Selga",
+  "banco": "Banorte",
+  "cuenta": "····dato",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Select"
+ },
+ {
+  "empresa": "Selga A",
+  "banco": "Banorte",
+  "cuenta": "····dato",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Select"
+ },
+ {
+  "empresa": "Solestra",
+  "banco": "Bankaool",
+  "cuenta": "····9523",
+  "moneda": "MXN",
+  "saldo": null,
+  "fecha": null,
+  "origen": "",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [],
+  "grupo": "Grupo Solestra"
  }
 ]
 </script>
@@ -367,7 +517,7 @@ const EMPRESAS = [
     "empresa": "Inmobiliaria Limman Hur",
     "saldo": 197806.99,
     "moneda": "MXN",
-    "cuenta": "····0594"
+    "cuenta": "····1297"
    }
   ]
  },
@@ -383,7 +533,7 @@ const EMPRESAS = [
     "empresa": "Securitas",
     "saldo": 7695.35,
     "moneda": "MXN",
-    "cuenta": "····9990"
+    "cuenta": "····0087"
    }
   ]
  },
@@ -422,6 +572,26 @@ const EMPRESAS = [
 const pesos = n => n.toLocaleString("es-MX", {minimumFractionDigits:2, maximumFractionDigits:2});
 const fecha = f => { const [a,m,d] = f.split("-"); return d + "/" + m + "/" + a; };
 
+const HOY_ISO = "2026-11-17";
+const HOY_LETRA = "17 de noviembre de 2026";
+
+/* Días completos entre una fecha y hoy, sin husos de por medio. */
+function diasDesde(iso){
+  const [a1,m1,d1] = iso.split("-").map(Number);
+  const [a2,m2,d2] = HOY_ISO.split("-").map(Number);
+  return Math.round((Date.UTC(a2,m2-1,d2) - Date.UTC(a1,m1-1,d1)) / 86400000);
+}
+/* De cuándo es el saldo, dicho en palabras: lo viejo se marca para que no se
+   confunda con el del día. */
+function cuandoDice(c){
+  if (c.saldo === null) return {texto:"Sin captura", tono:"sindato"};
+  const n = diasDesde(c.fecha);
+  if (n <= 0) return {texto:"Saldo de hoy", tono:"fresco"};
+  if (n === 1) return {texto:"Saldo de ayer", tono:"fresco"};
+  return {texto:"Saldo del " + fecha(c.fecha) + " · hace " + n + " días",
+          tono:"viejo"};
+}
+
 /* --- Pestañas ---------------------------------------------------------- */
 const tabs = [...document.querySelectorAll('.pestanas button')];
 tabs.forEach(b => b.addEventListener("click", () => {
@@ -439,46 +609,65 @@ function pintaSaldos(seccion, filtro){
   const lote = delGrupo.filter(c => !f ||
     (c.empresa + " " + c.banco + " " + c.cuenta).toLowerCase().includes(f));
 
-  const suma = delGrupo.filter(c => c.moneda === "MXN")
+  const conSaldo = delGrupo.filter(c => c.saldo !== null);
+  const deHoy = conSaldo.filter(c => diasDesde(c.fecha) <= 0);
+  const suma = conSaldo.filter(c => c.moneda === "MXN")
                        .reduce((t, c) => t + c.saldo, 0);
-  const corte = delGrupo.length
-    ? delGrupo.map(c => c.fecha).sort().slice(-1)[0] : null;
+
   seccion.querySelector(".et-n").textContent =
-    "Suma en pesos · " + delGrupo.length +
-    (delGrupo.length === 1 ? " cuenta" : " cuentas");
+    "Suma en pesos · " + conSaldo.length + " de " + delGrupo.length +
+    (delGrupo.length === 1 ? " cuenta" : " cuentas") + " con saldo";
   seccion.querySelector(".total .cifra").textContent = "$" + pesos(suma);
-  seccion.querySelector(".total .pie").textContent = corte
-    ? "Al corte del " + fecha(corte) + ". Cada cuenta con su propia fecha de captura."
-    : "Todavía no hay saldos registrados en este grupo.";
+  const pie = seccion.querySelector(".total .pie");
+  if (!conSaldo.length){
+    pie.textContent = "Todavía no se captura ningún saldo de este grupo.";
+  } else if (deHoy.length === conSaldo.length){
+    pie.textContent = "Todo lo capturado es de hoy, " + HOY_LETRA + ".";
+  } else {
+    pie.textContent = deHoy.length + " de " + conSaldo.length +
+      " con saldo de hoy (" + HOY_LETRA + "). Las demás traen el último que se " +
+      "capturó y salen marcadas en ámbar.";
+  }
 
   if (!lote.length){
     const v = document.createElement("p"); v.className = "vacio";
     v.textContent = delGrupo.length
       ? "Nada con ese nombre."
-      : "Aún no se registra ningún saldo de este grupo.";
+      : "Este grupo no tiene cuentas asignadas.";
     cont.append(v); return;
   }
+
   for (const c of lote){
-    const art = document.createElement("article"); art.className = "emp";
+    const art = document.createElement("article");
+    art.className = "emp" + (c.saldo === null ? " sincaptura" : "");
     const fila = document.createElement("div"); fila.className = "fila";
     const h = document.createElement("h3"); h.textContent = c.empresa;
     const cif = document.createElement("div"); cif.className = "cifra";
-    cif.textContent = (c.moneda === "USD" ? "USD " : "$") + pesos(c.saldo);
-    fila.append(h, cif); art.append(fila);
+    cif.textContent = c.saldo === null
+      ? "—"
+      : (c.moneda === "USD" ? "USD " : "$") + pesos(c.saldo);
+    if (c.saldo === null) cif.classList.add("sindato");
+
+    const cuando = cuandoDice(c);
+    const sello = document.createElement("span");
+    sello.className = "sello " + cuando.tono;
+    sello.textContent = cuando.texto;
+    fila.append(h, cif, sello);
+    art.append(fila);
 
     const det = document.createElement("div"); det.className = "det";
-    det.textContent = c.banco + " \u00b7 " + c.cuenta + " \u00b7 al " + fecha(c.fecha);
+    det.textContent = c.banco + " · " + c.cuenta;
     if (c.previo !== null && c.previo !== undefined){
       const dif = c.saldo - c.previo;
       const s = document.createElement("span");
       s.className = dif >= 0 ? "sube" : "baja";
-      s.textContent = "  " + (dif >= 0 ? "+" : "\u2212") + "$" + pesos(Math.abs(dif)) +
+      s.textContent = "  " + (dif >= 0 ? "+" : "−") + "$" + pesos(Math.abs(dif)) +
                       " desde el " + fecha(c.fecha_previo);
       det.append(s);
     }
     art.append(det);
 
-    if (c.historico.length > 1){
+    if (c.historico && c.historico.length > 1){
       const hist = document.createElement("div"); hist.className = "hist";
       for (const h2 of c.historico.slice(-6)){
         const s = document.createElement("span");
