@@ -79,6 +79,8 @@
   .tarjeta.pend{border-color:var(--alerta);background:var(--alerta-fondo)}
   .tarjeta h3{font-size:14.5px;font-weight:700;margin:0 0 2px}
   .tarjeta .banco{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--acero);font-weight:600}
+  .capturado{margin-top:7px;padding-top:7px;border-top:1px dashed var(--linea);
+             font-size:13px;color:var(--ok);font-weight:600;font-variant-numeric:tabular-nums}
   .opciones{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
   .opciones button{font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;
                    border:1px solid var(--linea);background:transparent;color:var(--tenue);
@@ -141,8 +143,7 @@
   <section id="barrido" hidden>
     <p class="sub" id="fecha-barrido" style="margin:18px 0 12px"></p>
     <div class="rejilla" id="rejilla"></div>
-    <p class="sub" style="margin-top:14px">Lo que marques se guarda en este navegador y se
-    reinicia cada día.</p>
+    <p class="sub" style="margin-top:14px" id="pie-barrido"></p>
   </section>
 
   <section id="captura" hidden>
@@ -272,62 +273,149 @@ const EMPRESAS = [
  {
   "id": "campta",
   "nombre": "Campta",
-  "banco": "BBVA Bancomer"
+  "banco": "BBVA Bancomer",
+  "empresas": [
+   "Campta"
+  ],
+  "capturado": []
  },
  {
   "id": "salud",
   "nombre": "Salud",
-  "banco": "BBVA Bancomer"
+  "banco": "BBVA Bancomer",
+  "empresas": [
+   "Salud"
+  ],
+  "capturado": [
+   {
+    "empresa": "Salud",
+    "saldo": 1423.64,
+    "moneda": "MXN",
+    "cuenta": "····4477"
+   }
+  ]
  },
  {
   "id": "mac",
   "nombre": "Mac Computer",
-  "banco": "BBVA Bancomer"
+  "banco": "BBVA Bancomer",
+  "empresas": [
+   "Mac Computer"
+  ],
+  "capturado": [
+   {
+    "empresa": "Mac Computer",
+    "saldo": 1805.12,
+    "moneda": "MXN",
+    "cuenta": "····0785"
+   }
+  ]
  },
  {
   "id": "altix",
   "nombre": "Altix",
-  "banco": "BBVA Bancomer"
+  "banco": "BBVA Bancomer",
+  "empresas": [
+   "Altix"
+  ],
+  "capturado": [
+   {
+    "empresa": "Altix",
+    "saldo": 9913.24,
+    "moneda": "MXN",
+    "cuenta": "····5582"
+   }
+  ]
  },
  {
   "id": "clickart",
   "nombre": "Publicidad Click Art",
-  "banco": "BBVA Bancomer"
+  "banco": "BBVA Bancomer",
+  "empresas": [
+   "Publicidad Click Art"
+  ],
+  "capturado": []
  },
  {
   "id": "cofed",
   "nombre": "Cofed",
-  "banco": "HSBC"
+  "banco": "HSBC",
+  "empresas": [
+   "Cofed"
+  ],
+  "capturado": []
  },
  {
   "id": "solestra",
   "nombre": "Solestra",
-  "banco": "Bankaool"
+  "banco": "Bankaool",
+  "empresas": [
+   "Solestra"
+  ],
+  "capturado": []
  },
  {
   "id": "limmon",
   "nombre": "Inmobiliaria Limmon Hur",
-  "banco": "Bankaool"
+  "banco": "Bankaool",
+  "empresas": [
+   "Inmobiliaria Limman Hur",
+   "Inmobiliaria Limmon Hur"
+  ],
+  "capturado": [
+   {
+    "empresa": "Inmobiliaria Limman Hur",
+    "saldo": 197806.99,
+    "moneda": "MXN",
+    "cuenta": "····0594"
+   }
+  ]
  },
  {
   "id": "securitas",
   "nombre": "Securitas",
-  "banco": "Santander · Fondeadora"
+  "banco": "Santander · Fondeadora",
+  "empresas": [
+   "Securitas"
+  ],
+  "capturado": [
+   {
+    "empresa": "Securitas",
+    "saldo": 7695.35,
+    "moneda": "MXN",
+    "cuenta": "····9990"
+   }
+  ]
  },
  {
   "id": "gaen",
   "nombre": "Gaen",
-  "banco": "Inbursa · OP y ADM"
+  "banco": "Inbursa · OP y ADM",
+  "empresas": [
+   "Gaen OP",
+   "Gaen ADM"
+  ],
+  "capturado": []
  },
  {
   "id": "edificare",
   "nombre": "Edificare",
-  "banco": "Inbursa · OP y ADM"
+  "banco": "Inbursa · OP y ADM",
+  "empresas": [
+   "Edificare OP",
+   "Edificare ADM"
+  ],
+  "capturado": []
  },
  {
   "id": "selga",
   "nombre": "Selga",
-  "banco": "Banorte · Selga y Selga A"
+  "banco": "Banorte · Selga y Selga A",
+  "empresas": [
+   "Selga",
+   "Selga A"
+  ],
+  "capturado": []
  }
 ];
 
@@ -434,15 +522,32 @@ document.getElementById("fecha-barrido").textContent = "Barrido del " + enLetra(
 function pintaBarrido(){
   const rej = document.getElementById("rejilla");
   rej.textContent = "";
+  let conSaldo = 0;
   for (const e of EMPRESAS){
     const r = estado[e.id] || {};
-    const marca = r.marca || "no";
+    /* Si hoy ya se capturó el saldo, la cuenta está revisada: la marca manual solo
+       sirve para corregir eso o para apuntar un pendiente. */
+    const capturada = (e.capturado || []).length > 0;
+    if (capturada) conSaldo++;
+    const marca = r.marca || (capturada ? "ok" : "no");
     const t = document.createElement("article");
     t.className = "tarjeta" + (marca === "ok" ? " ok" : marca === "pend" ? " pend" : "");
 
     const h = document.createElement("h3"); h.textContent = e.nombre;
     const b = document.createElement("div"); b.className = "banco"; b.textContent = e.banco;
     t.append(h, b);
+
+    if (capturada){
+      const s = document.createElement("div"); s.className = "capturado";
+      for (const c of e.capturado){
+        const l = document.createElement("div");
+        l.textContent = "✓ " + (c.moneda === "USD" ? "USD " : "$") + pesos(c.saldo) +
+                        "  ·  " + c.cuenta +
+                        (e.capturado.length > 1 ? "  ·  " + c.empresa : "");
+        s.append(l);
+      }
+      t.append(s);
+    }
 
     const ops = document.createElement("div"); ops.className = "opciones";
     for (const clave of ["ok","pend","no"]){
@@ -467,6 +572,13 @@ function pintaBarrido(){
     t.append(nota);
     rej.append(t);
   }
+  const pie = document.getElementById("pie-barrido");
+  pie.textContent = conSaldo
+    ? conSaldo + " de " + EMPRESAS.length + " ya entraron con el saldo de hoy; esas " +
+      "quedan marcadas solas. Lo que cambies se guarda en este navegador y se reinicia " +
+      "cada día."
+    : "Todavía no entra ningún saldo de hoy. Lo que marques se guarda en este " +
+      "navegador y se reinicia cada día.";
 }
 pintaBarrido();
 </script>
