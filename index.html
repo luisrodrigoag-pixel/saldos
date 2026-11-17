@@ -254,6 +254,24 @@
   "grupo": "Select"
  },
  {
+  "empresa": "Gaen",
+  "banco": "Inbursa",
+  "cuenta": "····7909",
+  "moneda": "MXN",
+  "saldo": 1776.77,
+  "fecha": "2026-11-17",
+  "origen": "captura saldo disponible 10:52",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [
+   {
+    "fecha": "2026-11-17",
+    "saldo": 1776.77
+   }
+  ],
+  "grupo": "Select"
+ },
+ {
   "empresa": "Salud",
   "banco": "BBVA Bancomer",
   "cuenta": "····4477",
@@ -267,6 +285,24 @@
    {
     "fecha": "2026-11-17",
     "saldo": 1423.64
+   }
+  ],
+  "grupo": "Select"
+ },
+ {
+  "empresa": "Selga",
+  "banco": "Banorte",
+  "cuenta": "····dato",
+  "moneda": "MXN",
+  "saldo": 950.12,
+  "fecha": "2026-11-17",
+  "origen": "captura Mis Productos Banorte 10:47, cuentas de cheques",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [
+   {
+    "fecha": "2026-11-17",
+    "saldo": 950.12
    }
   ],
   "grupo": "Select"
@@ -324,32 +360,6 @@
   "grupo": "Por acomodar"
  },
  {
-  "empresa": "Gaen ADM",
-  "banco": "Inbursa",
-  "cuenta": "····7909",
-  "moneda": "MXN",
-  "saldo": null,
-  "fecha": null,
-  "origen": "",
-  "previo": null,
-  "fecha_previo": null,
-  "historico": [],
-  "grupo": "Select"
- },
- {
-  "empresa": "Gaen OP",
-  "banco": "Inbursa",
-  "cuenta": "····7909",
-  "moneda": "MXN",
-  "saldo": null,
-  "fecha": null,
-  "origen": "",
-  "previo": null,
-  "fecha_previo": null,
-  "historico": [],
-  "grupo": "Select"
- },
- {
   "empresa": "Publicidad Click Art",
   "banco": "BBVA Bancomer",
   "cuenta": "····9190",
@@ -374,32 +384,6 @@
   "fecha_previo": null,
   "historico": [],
   "grupo": "Grupo Solestra"
- },
- {
-  "empresa": "Selga",
-  "banco": "Banorte",
-  "cuenta": "····dato",
-  "moneda": "MXN",
-  "saldo": null,
-  "fecha": null,
-  "origen": "",
-  "previo": null,
-  "fecha_previo": null,
-  "historico": [],
-  "grupo": "Select"
- },
- {
-  "empresa": "Selga A",
-  "banco": "Banorte",
-  "cuenta": "····dato",
-  "moneda": "MXN",
-  "saldo": null,
-  "fecha": null,
-  "origen": "",
-  "previo": null,
-  "fecha_previo": null,
-  "historico": [],
-  "grupo": "Select"
  },
  {
   "empresa": "Solestra",
@@ -542,10 +526,18 @@ const EMPRESAS = [
   "nombre": "Gaen",
   "banco": "Inbursa · OP y ADM",
   "empresas": [
+   "Gaen",
    "Gaen OP",
    "Gaen ADM"
   ],
-  "capturado": []
+  "capturado": [
+   {
+    "empresa": "Gaen",
+    "saldo": 1776.77,
+    "moneda": "MXN",
+    "cuenta": "····7909"
+   }
+  ]
  },
  {
   "id": "edificare",
@@ -565,7 +557,14 @@ const EMPRESAS = [
    "Selga",
    "Selga A"
   ],
-  "capturado": []
+  "capturado": [
+   {
+    "empresa": "Selga",
+    "saldo": 950.12,
+    "moneda": "MXN",
+    "cuenta": "····dato"
+   }
+  ]
  }
 ];
 
