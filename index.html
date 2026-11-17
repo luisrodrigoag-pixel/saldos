@@ -197,7 +197,8 @@
     "saldo": 197806.99
    }
   ],
-  "grupo": "Select"
+  "grupo": "Select",
+  "titulo": "Inmobiliaria Limman Hur"
  },
  {
   "empresa": "Solestra",
@@ -215,7 +216,8 @@
     "saldo": 99335.55
    }
   ],
-  "grupo": "Grupo Solestra"
+  "grupo": "Grupo Solestra",
+  "titulo": "Solestra"
  },
  {
   "empresa": "Campta",
@@ -233,7 +235,8 @@
     "saldo": 17675.47
    }
   ],
-  "grupo": "Grupo Solestra"
+  "grupo": "Grupo Solestra",
+  "titulo": "Campta"
  },
  {
   "empresa": "Altix",
@@ -251,7 +254,8 @@
     "saldo": 9913.24
    }
   ],
-  "grupo": "Select"
+  "grupo": "Select",
+  "titulo": "Altix"
  },
  {
   "empresa": "Securitas",
@@ -269,7 +273,8 @@
     "saldo": 7695.35
    }
   ],
-  "grupo": "Grupo Solestra"
+  "grupo": "Grupo Solestra",
+  "titulo": "Securitas · Santander"
  },
  {
   "empresa": "Mac Computer",
@@ -287,7 +292,8 @@
     "saldo": 1805.12
    }
   ],
-  "grupo": "Select"
+  "grupo": "Select",
+  "titulo": "Mac Computer"
  },
  {
   "empresa": "Gaen",
@@ -305,7 +311,8 @@
     "saldo": 1776.77
    }
   ],
-  "grupo": "Select"
+  "grupo": "Select",
+  "titulo": "Gaen"
  },
  {
   "empresa": "Salud",
@@ -323,7 +330,8 @@
     "saldo": 1423.64
    }
   ],
-  "grupo": "Select"
+  "grupo": "Select",
+  "titulo": "Salud"
  },
  {
   "empresa": "Selga",
@@ -341,7 +349,8 @@
     "saldo": 950.12
    }
   ],
-  "grupo": "Select"
+  "grupo": "Select",
+  "titulo": "Selga"
  },
  {
   "empresa": "Cofed",
@@ -354,7 +363,8 @@
   "previo": null,
   "fecha_previo": null,
   "historico": [],
-  "grupo": "Grupo Solestra"
+  "grupo": "Grupo Solestra",
+  "titulo": "Cofed"
  },
  {
   "empresa": "Edificare ADM",
@@ -367,7 +377,8 @@
   "previo": null,
   "fecha_previo": null,
   "historico": [],
-  "grupo": "Por acomodar"
+  "grupo": "Por acomodar",
+  "titulo": "Edificare ADM"
  },
  {
   "empresa": "Edificare OP",
@@ -380,7 +391,8 @@
   "previo": null,
   "fecha_previo": null,
   "historico": [],
-  "grupo": "Por acomodar"
+  "grupo": "Por acomodar",
+  "titulo": "Edificare OP"
  },
  {
   "empresa": "Publicidad Click Art",
@@ -393,7 +405,8 @@
   "previo": null,
   "fecha_previo": null,
   "historico": [],
-  "grupo": "Por acomodar"
+  "grupo": "Por acomodar",
+  "titulo": "Publicidad Click Art"
  },
  {
   "empresa": "Securitas",
@@ -406,7 +419,8 @@
   "previo": null,
   "fecha_previo": null,
   "historico": [],
-  "grupo": "Grupo Solestra"
+  "grupo": "Grupo Solestra",
+  "titulo": "Securitas · Fondeadora"
  }
 ]
 </script>
@@ -664,7 +678,7 @@ function pintaSaldos(seccion, filtro){
     const art = document.createElement("article");
     art.className = "emp" + (c.saldo === null ? " sincaptura" : "");
     const fila = document.createElement("div"); fila.className = "fila";
-    const h = document.createElement("h3"); h.textContent = c.empresa;
+    const h = document.createElement("h3"); h.textContent = c.titulo || c.empresa;
     const cif = document.createElement("div"); cif.className = "cifra";
     cif.textContent = c.saldo === null
       ? "—"
