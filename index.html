@@ -109,6 +109,21 @@
   }
 
   /* --- Pestañas ----------------------------------------------------- */
+  /* Total global: lo pidio Luis Ro el 18-nov-2026 porque cada pestana solo
+     sumaba su grupo y no habia forma de ver el dinero de todo junto. */
+  .global{background:var(--velo-alto);
+          -webkit-backdrop-filter:blur(24px) saturate(170%);
+          backdrop-filter:blur(24px) saturate(170%);
+          border:1px solid var(--borde);border-radius:var(--radio);
+          box-shadow:var(--sombra);position:relative;overflow:hidden;
+          padding:18px 22px;margin:0 0 14px}
+  .global::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+                 background:linear-gradient(180deg,var(--pizarra,#1f2d4d),var(--champan))}
+  .global .g-et{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+                color:var(--tenue);font-weight:700}
+  .global .g-cifra{font-family:"Fraunces",Georgia,serif;font-size:32px;
+                   font-weight:600;letter-spacing:-.01em;margin:4px 0 2px}
+  .global .g-pie{font-size:12.5px;color:var(--tenue)}
   .pestanas{position:sticky;top:10px;z-index:9;display:flex;gap:6px;flex-wrap:wrap;
             padding:7px;margin:16px 0 18px;
             background:var(--velo-alto);
@@ -293,6 +308,12 @@
     <h1>Control de cuentas</h1>
     <p class="sub">Saldos al corte, barrido del día y el envío de capturas.</p>
   </header>
+
+  <div class="global" id="global">
+    <div class="g-et">Total global &middot; <span class="g-n"></span></div>
+    <div class="g-cifra"></div>
+    <div class="g-pie"></div>
+  </div>
 
   <div class="pestanas" role="tablist">
     <button type="button" role="tab" data-ver="g-select" aria-selected="true">Select</button>
@@ -942,6 +963,26 @@ for (const sec of document.querySelectorAll("section[data-grupo]")){
     e => pintaSaldos(sec, e.target.value));
   pintaSaldos(sec, "");
 }
+
+/* Total global: suma TODAS las cuentas de todos los grupos, no la pestana activa. */
+function pintaGlobal(){
+  const caja = document.getElementById("global");
+  if (!caja) return;
+  const conSaldo = CUENTAS.filter(c => c.saldo !== null);
+  const suma = conSaldo.filter(c => c.moneda === "MXN")
+                       .reduce((t, c) => t + c.saldo, 0);
+  const deHoy = conSaldo.filter(c => diasDesde(c.fecha) <= 0);
+  const grupos = [...new Set(CUENTAS.map(c => c.grupo))];
+  caja.querySelector(".g-n").textContent =
+    conSaldo.length + " de " + CUENTAS.length + " cuentas con saldo, en " +
+    grupos.length + (grupos.length === 1 ? " grupo" : " grupos");
+  caja.querySelector(".g-cifra").textContent = "$" + pesos(suma);
+  const faltan = CUENTAS.length - conSaldo.length;
+  caja.querySelector(".g-pie").textContent =
+    (faltan ? faltan + (faltan === 1 ? " cuenta sigue" : " cuentas siguen") + " sin captura. " : "") +
+    deHoy.length + " de " + conSaldo.length + " con saldo de hoy.";
+}
+pintaGlobal();
 
 /* --- Barrido diario ---------------------------------------------------- */
 const ETIQUETAS = {no:"Pendiente", ok:"Revisada", pend:"Con pendiente"};
