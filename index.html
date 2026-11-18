@@ -802,24 +802,19 @@ tabs.forEach(b => b.addEventListener("click", () => {
   for (const t of tabs) document.getElementById(t.dataset.ver).hidden = (t !== b);
 }));
 
-/* --- El cuadro por empresa ---------------------------------------------- */
-/* Las tarjetas son por CUENTA, y hay empresas con dos (Securitas: Santander y
-   Fondeadora). Este cuadro suma por empresa, que es como se mira el dinero. */
+/* --- El cuadro, un renglon por CUENTA ----------------------------------- */
+/* Antes sumaba por empresa y Securitas salia en un solo renglon con "2 cuentas",
+   asi que no se veia cuanto habia en Santander y cuanto en Fondeadora. Luis Ro
+   pidio el 18-nov-2026 que las dos aparezcan y que se sumen al total. */
 function pintaCuadro(seccion, cuentas){
   const tabla = seccion.querySelector(".cuadro");
   tabla.textContent = "";
   if (!cuentas.length){ tabla.hidden = true; return; }
   tabla.hidden = false;
 
-  const porEmpresa = new Map();
-  for (const c of cuentas){
-    if (!porEmpresa.has(c.empresa)) porEmpresa.set(c.empresa, []);
-    porEmpresa.get(c.empresa).push(c);
-  }
-
   const thead = document.createElement("thead");
   const trh = document.createElement("tr");
-  for (const [txt, clase] of [["Empresa",""],["Cuentas","num"],["Saldo","num"],["Última captura","num"]]){
+  for (const [txt, clase] of [["Empresa",""],["Banco","num"],["Saldo","num"],["Última captura","num"]]){
     const th = document.createElement("th");
     th.textContent = txt; if (clase) th.className = clase;
     trh.append(th);
@@ -827,17 +822,16 @@ function pintaCuadro(seccion, cuentas){
   thead.append(trh); tabla.append(thead);
 
   const tbody = document.createElement("tbody");
-  const filas = [...porEmpresa.entries()].map(([empresa, lote]) => {
-    const con = lote.filter(c => c.saldo !== null);
-    return {
-      empresa,
-      cuentas: lote.length,
-      saldo: con.filter(c => c.moneda === "MXN").reduce((t, c) => t + c.saldo, 0),
-      hay: con.length > 0,
-      fecha: con.length ? con.map(c => c.fecha).sort().slice(-1)[0] : null,
-      leyenda: lote[0].leyenda || null,
-    };
-  }).sort((a, b) => b.saldo - a.saldo || a.empresa.localeCompare(b.empresa));
+  const filas = cuentas.map(c => ({
+    empresa: c.empresa,
+    banco: c.banco,
+    saldo: (c.saldo !== null && c.moneda === "MXN") ? c.saldo : 0,
+    hay: c.saldo !== null,
+    fecha: c.fecha,
+    leyenda: c.leyenda || null,
+  })).sort((a, b) => b.saldo - a.saldo ||
+                     a.empresa.localeCompare(b.empresa) ||
+                     a.banco.localeCompare(b.banco));
 
   let total = 0;
   for (const f of filas){
@@ -847,7 +841,7 @@ function pintaCuadro(seccion, cuentas){
     const td1 = document.createElement("td"); td1.className = "emp-nom";
     td1.textContent = f.empresa; tr.append(td1);
     const td2 = document.createElement("td"); td2.className = "num";
-    td2.textContent = f.cuentas; tr.append(td2);
+    td2.textContent = f.banco; tr.append(td2);
     const td3 = document.createElement("td"); td3.className = "num";
     td3.textContent = f.hay ? "$" + pesos(f.saldo) : "—"; tr.append(td3);
     const td4 = document.createElement("td"); td4.className = "num";
@@ -866,7 +860,8 @@ function pintaCuadro(seccion, cuentas){
   const trt = document.createElement("tr"); trt.className = "suma";
   const t1 = document.createElement("td"); t1.textContent = "Total"; trt.append(t1);
   const t2 = document.createElement("td"); t2.className = "num";
-  t2.textContent = cuentas.length; trt.append(t2);
+  t2.textContent = cuentas.length + (cuentas.length === 1 ? " cuenta" : " cuentas");
+  trt.append(t2);
   const t3 = document.createElement("td"); t3.className = "num";
   t3.textContent = "$" + pesos(total); trt.append(t3);
   const t4 = document.createElement("td"); trt.append(t4);
