@@ -379,6 +379,25 @@
 <script id="datos" type="application/json">
 [
  {
+  "empresa": "Securitas",
+  "banco": "Fondeadora",
+  "cuenta": "Entra por correo",
+  "moneda": "MXN",
+  "saldo": 389052.36,
+  "fecha": "2026-11-18",
+  "origen": "captura Fondeadora saldo actual, 18-nov 12:50",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [
+   {
+    "fecha": "2026-11-18",
+    "saldo": 389052.36
+   }
+  ],
+  "grupo": "Grupo Solestra",
+  "titulo": "Securitas · Fondeadora"
+ },
+ {
   "empresa": "Inmobiliaria Limman Hur",
   "banco": "Bankaool",
   "cuenta": "····0594",
@@ -622,20 +641,6 @@
   "historico": [],
   "grupo": "Select",
   "titulo": "Publicidad Click Art"
- },
- {
-  "empresa": "Securitas",
-  "banco": "Fondeadora",
-  "cuenta": "Entra por correo",
-  "moneda": "MXN",
-  "saldo": null,
-  "fecha": null,
-  "origen": "",
-  "previo": null,
-  "fecha_previo": null,
-  "historico": [],
-  "grupo": "Grupo Solestra",
-  "titulo": "Securitas · Fondeadora"
  }
 ]
 </script>
@@ -731,6 +736,12 @@ const EMPRESAS = [
    "Securitas"
   ],
   "capturado": [
+   {
+    "empresa": "Securitas",
+    "saldo": 389052.36,
+    "moneda": "MXN",
+    "cuenta": "Entra por correo"
+   },
    {
     "empresa": "Securitas",
     "saldo": 189587.35,
