@@ -400,6 +400,29 @@
   "titulo": "Solestra"
  },
  {
+  "empresa": "Securitas",
+  "banco": "Santander",
+  "cuenta": "····9990",
+  "moneda": "MXN",
+  "saldo": 52587.35,
+  "fecha": "2026-11-18",
+  "origen": "captura Posicion Global 18-nov 11:55, cuenta de cheques; total de la cartera",
+  "previo": 7695.35,
+  "fecha_previo": "2026-11-17",
+  "historico": [
+   {
+    "fecha": "2026-11-17",
+    "saldo": 7695.35
+   },
+   {
+    "fecha": "2026-11-18",
+    "saldo": 52587.35
+   }
+  ],
+  "grupo": "Grupo Solestra",
+  "titulo": "Securitas · Santander"
+ },
+ {
   "empresa": "Campta",
   "banco": "BBVA Bancomer",
   "cuenta": "····3295",
@@ -436,25 +459,6 @@
   ],
   "grupo": "Select",
   "titulo": "Altix"
- },
- {
-  "empresa": "Securitas",
-  "banco": "Santander",
-  "cuenta": "····9990",
-  "moneda": "MXN",
-  "saldo": 7695.35,
-  "fecha": "2026-11-17",
-  "origen": "PDF movimientos 03-17 nov, saldo final; ultimo movimiento 13-nov 17:05",
-  "previo": null,
-  "fecha_previo": null,
-  "historico": [
-   {
-    "fecha": "2026-11-17",
-    "saldo": 7695.35
-   }
-  ],
-  "grupo": "Grupo Solestra",
-  "titulo": "Securitas · Santander"
  },
  {
   "empresa": "Mac Computer",
@@ -617,14 +621,7 @@ const EMPRESAS = [
   "empresas": [
    "Campta"
   ],
-  "capturado": [
-   {
-    "empresa": "Campta",
-    "saldo": 17675.47,
-    "moneda": "MXN",
-    "cuenta": "····3295"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "salud",
@@ -633,14 +630,7 @@ const EMPRESAS = [
   "empresas": [
    "Salud"
   ],
-  "capturado": [
-   {
-    "empresa": "Salud",
-    "saldo": 1423.64,
-    "moneda": "MXN",
-    "cuenta": "····4477"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "mac",
@@ -649,14 +639,7 @@ const EMPRESAS = [
   "empresas": [
    "Mac Computer"
   ],
-  "capturado": [
-   {
-    "empresa": "Mac Computer",
-    "saldo": 1805.12,
-    "moneda": "MXN",
-    "cuenta": "····0785"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "altix",
@@ -665,14 +648,7 @@ const EMPRESAS = [
   "empresas": [
    "Altix"
   ],
-  "capturado": [
-   {
-    "empresa": "Altix",
-    "saldo": 9913.24,
-    "moneda": "MXN",
-    "cuenta": "····5582"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "clickart",
@@ -699,14 +675,7 @@ const EMPRESAS = [
   "empresas": [
    "Solestra"
   ],
-  "capturado": [
-   {
-    "empresa": "Solestra",
-    "saldo": 99335.55,
-    "moneda": "MXN",
-    "cuenta": "····4634"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "limmon",
@@ -716,14 +685,7 @@ const EMPRESAS = [
    "Inmobiliaria Limman Hur",
    "Inmobiliaria Limmon Hur"
   ],
-  "capturado": [
-   {
-    "empresa": "Inmobiliaria Limman Hur",
-    "saldo": 314437.14,
-    "moneda": "MXN",
-    "cuenta": "····0594"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "securitas",
@@ -735,7 +697,7 @@ const EMPRESAS = [
   "capturado": [
    {
     "empresa": "Securitas",
-    "saldo": 7695.35,
+    "saldo": 52587.35,
     "moneda": "MXN",
     "cuenta": "····9990"
    }
@@ -750,14 +712,7 @@ const EMPRESAS = [
    "Gaen OP",
    "Gaen ADM"
   ],
-  "capturado": [
-   {
-    "empresa": "Gaen",
-    "saldo": 1776.77,
-    "moneda": "MXN",
-    "cuenta": "····7909"
-   }
-  ]
+  "capturado": []
  },
  {
   "id": "edificare",
@@ -777,22 +732,15 @@ const EMPRESAS = [
    "Selga",
    "Selga A"
   ],
-  "capturado": [
-   {
-    "empresa": "Selga",
-    "saldo": 950.12,
-    "moneda": "MXN",
-    "cuenta": "Sin número de cuenta"
-   }
-  ]
+  "capturado": []
  }
 ];
 
 const pesos = n => n.toLocaleString("es-MX", {minimumFractionDigits:2, maximumFractionDigits:2});
 const fecha = f => { const [a,m,d] = f.split("-"); return d + "/" + m + "/" + a; };
 
-const HOY_ISO = "2026-11-17";
-const HOY_LETRA = "17 de noviembre de 2026";
+const HOY_ISO = "2026-11-18";
+const HOY_LETRA = "18 de noviembre de 2026";
 
 /* Días completos entre una fecha y hoy, sin husos de por medio. */
 function diasDesde(iso){
