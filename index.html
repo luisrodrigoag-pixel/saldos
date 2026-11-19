@@ -522,18 +522,22 @@
   "cuenta": "····5582",
   "moneda": "MXN",
   "saldo": 9913.24,
-  "fecha": "2026-11-17",
-  "origen": "captura 10:40",
-  "previo": null,
-  "fecha_previo": null,
+  "fecha": "2026-11-18",
+  "origen": "captura BBVA 18-nov 19:13, Materiales y Suministros Altix; sin cambio respecto al 17-nov",
+  "previo": 9913.24,
+  "fecha_previo": "2026-11-17",
   "historico": [
    {
     "fecha": "2026-11-17",
     "saldo": 9913.24
+   },
+   {
+    "fecha": "2026-11-18",
+    "saldo": 9913.24
    }
   ],
   "grupo": "Select",
-  "titulo": "Altix"
+  "titulo": "Altix · BBVA Bancomer"
  },
  {
   "empresa": "Mac Computer",
@@ -595,6 +599,25 @@
   ],
   "grupo": "Select",
   "titulo": "Selga"
+ },
+ {
+  "empresa": "Altix",
+  "banco": "BBVA Bancomer USD",
+  "cuenta": "····9233",
+  "moneda": "USD",
+  "saldo": 1.0,
+  "fecha": "2026-11-18",
+  "origen": "captura BBVA 18-nov 19:13; cuenta corriente en dolares, no estaba en el control",
+  "previo": null,
+  "fecha_previo": null,
+  "historico": [
+   {
+    "fecha": "2026-11-18",
+    "saldo": 1.0
+   }
+  ],
+  "grupo": "Select",
+  "titulo": "Altix · BBVA Bancomer USD"
  },
  {
   "empresa": "Cofed",
@@ -715,7 +738,20 @@ const EMPRESAS = [
   "empresas": [
    "Altix"
   ],
-  "capturado": []
+  "capturado": [
+   {
+    "empresa": "Altix",
+    "saldo": 9913.24,
+    "moneda": "MXN",
+    "cuenta": "····5582"
+   },
+   {
+    "empresa": "Altix",
+    "saldo": 1.0,
+    "moneda": "USD",
+    "cuenta": "····9233"
+   }
+  ]
  },
  {
   "id": "clickart",
