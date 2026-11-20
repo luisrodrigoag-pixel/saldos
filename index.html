@@ -379,29 +379,6 @@
 <script id="datos" type="application/json">
 [
  {
-  "empresa": "Salud",
-  "banco": "BBVA Bancomer",
-  "cuenta": "····4477",
-  "moneda": "MXN",
-  "saldo": 248696.01,
-  "fecha": "2026-11-18",
-  "origen": "BBVANet 18-nov 19:08, cuenta 0126786499 (Equipamiento, Insumos y Articulos para la Salud SA); entro SPEI de Banorte por 247,272.37, referencia FACTURA SA 342",
-  "previo": 1423.64,
-  "fecha_previo": "2026-11-17",
-  "historico": [
-   {
-    "fecha": "2026-11-17",
-    "saldo": 1423.64
-   },
-   {
-    "fecha": "2026-11-18",
-    "saldo": 248696.01
-   }
-  ],
-  "grupo": "Select",
-  "titulo": "Salud"
- },
- {
   "empresa": "Securitas",
   "banco": "Fondeadora",
   "cuenta": "Entra por correo",
@@ -423,6 +400,33 @@
   ],
   "grupo": "Grupo Solestra",
   "titulo": "Securitas · Fondeadora"
+ },
+ {
+  "empresa": "Salud",
+  "banco": "BBVA Bancomer",
+  "cuenta": "····4477",
+  "moneda": "MXN",
+  "saldo": 143796.01,
+  "fecha": "2026-11-20",
+  "origen": "captura de Luis Ro 20-nov 10:58, saldo total disponible",
+  "previo": 248696.01,
+  "fecha_previo": "2026-11-18",
+  "historico": [
+   {
+    "fecha": "2026-11-17",
+    "saldo": 1423.64
+   },
+   {
+    "fecha": "2026-11-18",
+    "saldo": 248696.01
+   },
+   {
+    "fecha": "2026-11-20",
+    "saldo": 143796.01
+   }
+  ],
+  "grupo": "Select",
+  "titulo": "Salud"
  },
  {
   "empresa": "Inmobiliaria Limman Hur",
@@ -735,7 +739,14 @@ const EMPRESAS = [
   "empresas": [
    "Salud"
   ],
-  "capturado": []
+  "capturado": [
+   {
+    "empresa": "Salud",
+    "saldo": 143796.01,
+    "moneda": "MXN",
+    "cuenta": "····4477"
+   }
+  ]
  },
  {
   "id": "mac",
